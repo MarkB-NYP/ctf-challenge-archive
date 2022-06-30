@@ -1,0 +1,95 @@
+<!-- For your reference. This could help you understand the code used in the solve script, but this file is not essential to solving the challenge.-->
+<!DOCTYPE html> 
+<html>
+<head>
+    <style>
+        .row{
+            display:table;
+        }
+    
+    </style>
+    </head>
+<body>
+Royal Colour Generator
+    
+<div id='div1'></div>
+
+<script>
+        function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+    function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+    
+    cn=0;
+    function makeFlag(list){
+        var currentDiv = document.createElement('div');
+        currentDiv.className = "row";
+        const maindiv = document.getElementById("div1");
+         const c1 = document.createElement(`h1`);
+            c1.textContent=`This is number ${cn}`;
+        cn+=1;
+         maindiv.appendChild(c1);
+   for (p=0;p<list.length;p++){
+         const c2 = document.createElement("div");  c2.setAttribute("style",`display:table-cell;width:100px;height:200px;background-color:${rgbToHex(list[p][0],list[p][1],list[p][2])}`);
+      
+        currentDiv.appendChild(c2);
+   }
+        maindiv.appendChild(currentDiv)
+        return
+    }
+
+    
+a = 'STANDCON22{LUCK_OF_THE_SEA}'
+rounds = 20
+//max shift is 8*3 = 24, returns same result
+
+function getCharCodes(s){
+    let charCodeArr = [];
+    
+    for(let i = 0; i < s.length; i++){
+        let code = s.charCodeAt(i);
+        charCodeArr.push(code);
+    }
+    
+    return charCodeArr;
+}
+
+var array = getCharCodes(a)
+working=[]
+total=[]
+
+for (i=0;i<(array.length%3);i++){
+    array.push(0)
+}
+
+console.log(array)
+
+triplets = []
+for (i=0;i<array.length-2;i+=3){
+    triplets.push([array[i],array[i+1],array[i+2]])
+}
+    makeFlag(triplets)
+for (x=0;x<rounds;x++){
+    for (p=0;p<triplets.length;p++){
+        n = triplets[p]
+        
+            working=[]
+            for (i=0;i<n.length;i++){
+                sum = (triplets[p][i%triplets[p].length]+triplets[p][(i+1)%triplets[p].length])
+                if (sum >= 255){sum-=255;}
+                working.push(sum)
+            }
+            //console.log(working)
+                triplets[p] = working
+        }
+makeFlag(triplets)
+    
+}
+
+</script>
+</body>
+
+</html>
